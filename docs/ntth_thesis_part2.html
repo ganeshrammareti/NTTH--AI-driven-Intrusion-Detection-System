@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTTH Thesis — Part 2: Introduction & Literature Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Calibri:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Calibri', 'Trebuchet MS', sans-serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 1in 1in 0.7in 1in;
+    position: relative;
+    background: #fff;
+    page-break-after: always;
+  }
+  h1 { font-size: 14pt; font-weight: bold; text-align: center; margin-bottom: 18pt; color: #000; text-transform: uppercase; }
+  h2 { font-size: 13pt; font-weight: bold; margin-bottom: 10pt; margin-top: 16pt; color: #000; }
+  h3 { font-size: 12pt; font-weight: bold; margin-bottom: 8pt; margin-top: 12pt; color: #000; }
+  p { text-align: justify; margin-bottom: 10pt; font-size: 12pt; line-height: 1.5; }
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 20pt;
+    padding-bottom: 10pt;
+    border-bottom: 2px solid #000;
+  }
+  .chapter-header .ch-num { font-size: 13pt; font-weight: bold; color: #1b3a5c; }
+  .chapter-header .ch-title { font-size: 15pt; font-weight: bold; color: #000; margin-top: 4pt; }
+  .page-number { position: absolute; bottom: 0.35in; width: calc(100% - 2in); text-align: center; font-size: 12pt; color: #000; }
+  table { width: 100%; border-collapse: collapse; font-size: 12pt; margin: 12pt 0; }
+  th { background: #1b3a5c; color: #fff; font-weight: bold; padding: 6pt 10pt; text-align: left; border: 1px solid #1b3a5c; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  td { padding: 5pt 10pt; border: 1px solid #aaa; vertical-align: top; font-size: 12pt; }
+  tr:nth-child(even) td { background: #f0f4f8; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .fig-box { border: 1px solid #aaa; background: #f8f9fa; min-height: 2.2in; display: flex; align-items: center; justify-content: center; margin: 12pt 0; text-align: center; padding: 12pt; }
+  .fig-caption { font-size: 11pt; text-align: center; color: #333; font-style: italic; margin-bottom: 12pt; margin-top: -4pt; }
+  ul, ol { margin-left: 28pt; margin-bottom: 10pt; }
+  li { margin-bottom: 4pt; text-align: justify; line-height: 1.5; font-size: 12pt; }
+  @media print { .page { page-break-after: always; margin: 0 auto; } th { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<!-- ======================================================== -->
+<!--          PAGE 1: CHAPTER 1 — INTRODUCTION (p.1)          -->
+<!-- ======================================================== -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="ch-num">CHAPTER 1</div>
+    <div class="ch-title">Introduction</div>
+  </div>
+
+  <h2>1.1 Background and Context</h2>
+  <p>
+    Network security threats have grown substantially in both volume and complexity over the past
+    decade. What were once manual, targeted intrusion attempts have evolved into automated,
+    multi-vector campaigns that can scan, identify vulnerabilities, and initiate exploitation in a
+    matter of seconds. The MITRE ATT&amp;CK framework documents over 400 known adversary
+    techniques currently deployed in the wild, and datasets like CICIDS-2017 and NSL-KDD
+    reflect that traffic carrying embedded attack patterns is increasingly difficult to distinguish
+    from legitimate network behavior through rule-based methods alone.
+  </p>
+  <p>
+    Traditional Intrusion Detection Systems, including widely deployed tools such as Snort and
+    Suricata, operate on signature matching against a curated rule database. This approach is
+    effective for known attack patterns but fundamentally reactive — the system can only flag
+    what it has already been trained to recognize. Zero-day exploits, novel port-scanning
+    strategies, and disguised exfiltration flows often escape detection entirely. More critically,
+    even when an alert is generated, the response — blocking a source IP, isolating a
+    compromised host, or redirecting suspicious traffic — still depends on manual administrator
+    intervention in most production deployments.
+  </p>
+  <p>
+    This gap between alert generation and actual containment is well-documented. Studies from
+    Ponemon Institute's 2023 Cost of a Data Breach Report indicate that the mean time to
+    identify and contain a breach now stands at 277 days globally, with smaller organizations
+    faring considerably worse. Even at the network perimeter, the delay between a threat
+    triggering an IDS alert and a firewall rule being pushed manually is typically 15 to 30
+    minutes, representing a window during which lateral movement, data exfiltration, or
+    persistence mechanisms can be established.
+  </p>
+  <p>
+    This project addresses that specific gap. NTTH — an abbreviation for No Time To Hack —
+    implements a fully autonomous, closed-loop defense pipeline that eliminates the human
+    intervention step between detection and enforcement. The system captures and analyzes
+    network packets in real time, computes a hybrid risk score combining rule-based and
+    statistical signals, and autonomously applies firewall rules and honeypot redirection within
+    milliseconds of a threat crossing the configured threshold.
+  </p>
+
+  <div class="page-number">1</div>
+</div>
+
+<!-- ======================================================== -->
+<!--               PAGE 2: INTRODUCTION CONT. (p.2)           -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <h2>1.2 Problem Statement</h2>
+  <p>
+    Existing network defense solutions for small and medium-scale network environments face a
+    well-defined set of limitations. First, purely signature-based detection fails against novel
+    attack variants, generating both false negatives for unknown threats and — when tuned
+    aggressively — elevated false positives that fatigue security staff. Second, the
+    response phase of most deployments remains manual: administrators receive alerts but must
+    independently decide on and execute containment actions. Third, conventional honeypots
+    operate as static, pre-deployed decoy services that do not adapt to the attacker's apparent
+    target or communication port, reducing their effectiveness as intelligence-gathering tools.
+  </p>
+  <p>
+    There is also the question of cost and accessibility. Enterprise-grade SIEM platforms,
+    SOAR systems, and advanced threat intelligence feeds are financially out of reach for
+    university labs, small businesses, and research networks — the environments where
+    experimental attacks are often first detected and where lightweight, effective solutions
+    would have the most practical value.
+  </p>
+
+  <div class="fig-box">
+    <div>
+      <div style="font-size:12pt; font-weight:bold; color:#1b3a5c;">Fig 1.1 — Traditional vs NTTH Detection-to-Response Gap</div>
+      <div style="font-size:11pt; color:#555; margin-top:8pt;">
+        [Diagram: Timeline comparison — Traditional IDS (alert → manual review → 15-30 min → action) vs NTTH (detect → auto-score → &lt;500ms → enforce)]
+      </div>
+    </div>
+  </div>
+  <div class="fig-caption">Figure 1.1: Comparison of detection-to-response timelines in traditional IDS vs. the NTTH autonomous pipeline.</div>
+
+  <p>
+    The problem this project targets is therefore three-dimensional: detection must be more
+    adaptive than signature-only methods, response must be fully automated without removing
+    the option for human override, and the entire system must run on commodity hardware at
+    near-zero licensing cost.
+  </p>
+
+  <h2>1.3 Motivation</h2>
+  <p>
+    The motivation for NTTH emerged from two sources. Academically, recent advances in
+    anomaly detection using unsupervised learning — particularly Isolation Forest, which was
+    shown by Liu et al. [2] to achieve strong performance on high-dimensional network traffic
+    data with minimal labeling overhead — suggested that a lightweight, online-trainable
+    anomaly detector could meaningfully complement signature-based detection without requiring
+    a large labeled dataset. The combination of these two detection paradigms into a weighted
+    risk score appeared underexplored in deployable open-source tools.
+  </p>
+  <p>
+    Practically, the motivation came from observing how long it takes even a competent
+    administrator to respond to an IDS alert in a real network: locate the source, assess the
+    severity, choose an appropriate action, and execute it. That workflow, however practiced,
+    is measured in minutes, not seconds. Automating the response loop while preserving
+    interpretability — every NTTH action is logged with its triggering risk score and the specific
+    detector that fired — addresses a real operational need.
+  </p>
+
+  <div class="page-number">2</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                PAGE 3: INTRODUCTION CONT. (p.3)          -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <h2>1.4 Objectives</h2>
+  <p>
+    The primary objective of this project is to design, implement, and experimentally evaluate
+    an autonomous network defense system that operates without human intervention in the
+    detection-to-enforcement pipeline. This broad goal encompasses several specific technical
+    objectives that guided the architecture and implementation decisions throughout the project.
+  </p>
+  <p>
+    The first objective is to build a real-time packet capture and feature extraction engine
+    capable of processing traffic at line rate on commodity hardware. This involves using Scapy
+    for packet sniffing and constructing a 10-dimensional feature vector per flow window that
+    includes packet rate, byte count, entropy of destination ports, TCP flag distributions,
+    and ICMP request frequency.
+  </p>
+  <p>
+    The second objective is to implement a hybrid risk scoring model that meaningfully combines
+    the outputs of a signature-based IDS rule engine with a trained Isolation Forest anomaly
+    detector, such that the composite score captures both known attack signatures and
+    statistically anomalous traffic patterns. The specific weighted formula
+    (Score = 0.6 × IDS_score + 0.4 × anomaly_score) was determined through empirical tuning
+    on the CICIDS-2017 dataset subset described in Chapter 6.
+  </p>
+  <p>
+    The third objective is to implement autonomous firewall enforcement using Linux nftables,
+    generating and applying kernel-level packet filter rules without administrator input.
+    Related to this is the fourth objective: flow-aware honeypot redirection, where specific
+    attacker-to-victim-port traffic flows are transparently redirected to a Cowrie SSH honeypot
+    or a custom HTTP honeypot, rather than simply blocking the attacker and losing the
+    opportunity to observe their behavior.
+  </p>
+  <p>
+    The fifth objective is to build a real-time monitoring dashboard in Flutter, providing
+    live visibility into active threats, applied firewall rules, ongoing honeypot sessions, and
+    network topology — accessible on both web browser and Android without requiring separate
+    applications or login credentials per platform.
+  </p>
+  <p>
+    Finally, the sixth objective is to validate all of the above through a controlled attack
+    simulation using Kali Linux as an attacker node, executing a defined set of attack types
+    including port scanning, brute-force SSH, ARP spoofing, ICMP flood, and SYN flood, and
+    measuring detection accuracy, false positive rate, and response time against the same
+    traffic streams passed through Snort and Suricata for comparison.
+  </p>
+
+  <h2>1.5 Scope and Limitations</h2>
+  <p>
+    NTTH is scoped for deployment in single-gateway LAN environments. The packet capture
+    engine operates on a single network interface and does not implement distributed
+    sensor federation across multiple network segments. The system does not perform
+    deep packet inspection for encrypted TLS traffic and is not designed as a replacement
+    for production-grade perimeter firewalls. Its value lies specifically in the autonomous,
+    sub-second detection-to-response pipeline for unencrypted traffic on a monitored segment.
+  </p>
+
+  <div class="page-number">3</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                PAGE 4: INTRODUCTION CONT. (p.4)          -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <h2>1.6 Organization of the Report</h2>
+  <p>
+    The remainder of this report is organized as follows. Chapter 2 surveys the existing
+    literature on intrusion detection systems, anomaly detection, honeypot technologies, and
+    autonomous defense architectures, identifying specific gaps that this project addresses.
+    Chapter 3 presents the system design and architectural decisions in detail, including the
+    agent-inspired pipeline, the event bus design, the hybrid risk scoring formula, and the
+    database schema.
+  </p>
+  <p>
+    Chapter 4 describes the full implementation — the technology stack, each backend service,
+    the packet capture engine, the anomaly detector training process, the firewall integration,
+    the Flutter dashboard, and the Docker deployment configuration. Chapter 5 covers testing
+    and system demonstration, including annotated screenshots of the dashboard under live attack
+    conditions and the results of the API endpoint verification suite.
+  </p>
+  <p>
+    Chapter 6 presents experimental results and comparative analysis against Snort and Suricata.
+    Chapter 7 concludes the report with a discussion of the project's contributions, current
+    limitations, and directions for future development.
+  </p>
+
+  <div style="margin-top: 30pt; border-top: 1px solid #ccc; padding-top: 12pt;">
+    <p style="font-style: italic; color: #444;">
+      Note to reader: Throughout this report, system component names are capitalized when referring
+      to specific NTTH modules (e.g., the Risk Scorer, the Enforcement Engine). References to
+      third-party tools retain their standard casing (e.g., nftables, Cowrie, Scapy).
+    </p>
+  </div>
+
+  <!-- Spacer to fill page properly -->
+  <div style="margin-top: 60pt;">
+    <table>
+      <tr>
+        <th colspan="2">Summary — Chapter 1</th>
+      </tr>
+      <tr>
+        <td style="width:30%; font-weight:bold;">Problem</td>
+        <td>Manual response gap in IDS-based network defense (15–30 min detection to action)</td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;">Solution</td>
+        <td>Autonomous closed-loop pipeline with hybrid detection and real-time enforcement</td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;">Key Objectives</td>
+        <td>Packet capture → hybrid risk scoring → nftables enforcement → honeypot redirection → Flutter dashboard</td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;">Scope</td>
+        <td>Single-gateway LAN environment; unencrypted traffic; commodity hardware deployment</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="page-number">4</div>
+</div>
+
+<!-- ======================================================== -->
+<!--          PAGE 5: CHAPTER 2 — LITERATURE REVIEW (p.5)     -->
+<!-- ======================================================== -->
+<div class="page">
+  <div class="chapter-header">
+    <div class="ch-num">CHAPTER 2</div>
+    <div class="ch-title">Literature Review</div>
+  </div>
+
+  <h2>2.1 Signature-Based Intrusion Detection Systems</h2>
+  <p>
+    Signature-based intrusion detection is the oldest and most widely deployed approach to
+    network threat identification. Tools in this category — most prominently Snort [1] and
+    Suricata [2] — maintain a database of known attack patterns, called rules or signatures,
+    and flag traffic that matches any of these patterns. Snort's rule language, which has
+    become an informal standard in the field, allows specifying content patterns, protocol
+    behavior, and packet header conditions with considerable granularity.
+  </p>
+  <p>
+    The primary strength of signature-based detection is its precision for known attacks: a
+    correctly written rule for CVE-2021-44228 (Log4Shell) will identify exploitation attempts
+    with near-perfect recall. The fundamental limitation, however, is that the approach cannot
+    detect what it has not been taught. Roesch [1], who first described Snort in 1999, noted
+    this limitation explicitly, and subsequent decades of deployment have confirmed that
+    signature maintenance is an ongoing operational burden — the Emerging Threats ruleset
+    alone ships over 40,000 rules and requires continuous updates to remain effective.
+  </p>
+  <p>
+    Albin and Rowe [3] conducted a comparative evaluation of Snort and Suricata on identical
+    traffic captures and found that Suricata's multi-threaded architecture yielded higher
+    throughput on modern multi-core hardware, but that both systems had comparable detection
+    rates on the test set. The study also noted that both generated substantial alert volumes
+    on production traffic, with false positive rates reaching 12–18% without aggressive
+    threshold tuning. This observation directly informs the design choice in NTTH to treat
+    IDS rule output as one weighted component of a composite score rather than the sole
+    basis for enforcement decisions.
+  </p>
+  <p>
+    More recent work by Sharafaldin et al. [4], who developed the CICIDS-2017 dataset, provides
+    a rigorous evaluation framework for IDS systems. Their analysis showed that Snort detected
+    between 70% and 85% of attack flows across the dataset's seven attack categories, with
+    significant variance depending on attack type. SYN floods and port scans were reliably
+    detected; slow-rate attacks and encrypted command-and-control channels were not. This
+    dataset serves as the primary benchmark for the NTTH experimental evaluation in Chapter 6.
+  </p>
+
+  <div class="page-number">5</div>
+</div>
+
+<!-- ======================================================== -->
+<!--             PAGE 6: LITERATURE REVIEW CONT. (p.6)        -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <table>
+    <tr>
+      <th>IDS Tool</th>
+      <th>Detection Method</th>
+      <th>Response Capability</th>
+      <th>Known Limitation</th>
+    </tr>
+    <tr>
+      <td>Snort 3.x</td>
+      <td>Signature / Rule matching</td>
+      <td>Alert only</td>
+      <td>Cannot detect zero-day or novel variants</td>
+    </tr>
+    <tr>
+      <td>Suricata 7.x</td>
+      <td>Signature + protocol analysis</td>
+      <td>Alert + basic drop (IPS mode)</td>
+      <td>Manual rule management; no adaptive scoring</td>
+    </tr>
+    <tr>
+      <td>Zeek</td>
+      <td>Protocol behavior logging</td>
+      <td>Logging only</td>
+      <td>No native enforcement; scripting required</td>
+    </tr>
+    <tr>
+      <td>OSSEC</td>
+      <td>Log-based correlation</td>
+      <td>Active response (host-based)</td>
+      <td>Not designed for real-time network traffic</td>
+    </tr>
+    <tr>
+      <td><strong>NTTH</strong></td>
+      <td><strong>Hybrid: Rules + Isolation Forest</strong></td>
+      <td><strong>Autonomous nftables + honeypot</strong></td>
+      <td><strong>Single-interface, non-encrypted traffic</strong></td>
+    </tr>
+  </table>
+  <div class="fig-caption">Table 2.1: Comparison of existing IDS solutions with NTTH.</div>
+
+  <h2>2.2 Anomaly-Based Detection and Machine Learning</h2>
+  <p>
+    Anomaly-based intrusion detection takes a fundamentally different approach: rather than
+    matching against known patterns, these systems build a statistical model of normal traffic
+    and flag deviations. This approach can, in principle, detect novel attacks that have no
+    corresponding signature — the primary gap in signature-only systems.
+  </p>
+  <p>
+    Early work in this space by Denning [5] established the conceptual framework of statistical
+    profiling for intrusion detection, proposing that anomaly detection could identify both
+    insider threats and novel external attacks through statistical deviation from baseline behavior.
+    The practical challenge, which subsequent decades of research have wrestled with, is defining
+    what constitutes "normal" in a dynamic network and minimizing false positives.
+  </p>
+  <p>
+    Machine learning approaches gained traction in the early 2000s. Portnoy et al. [6] applied
+    k-means clustering to network flow records and demonstrated that attack flows naturally
+    clustered away from normal traffic under certain feature representations. Support Vector
+    Machines were applied by Mukkamala et al. [7] on the KDD Cup 1999 dataset, achieving over
+    99% accuracy — though subsequent work by Tavallaee et al. [8] showed that the KDD dataset
+    had significant class imbalance and duplicate records that artificially inflated reported
+    accuracy, motivating the development of NSL-KDD as a cleaner benchmark.
+  </p>
+  <p>
+    The Isolation Forest algorithm, proposed by Liu et al. [9], is particularly relevant to this
+    project. Unlike classification-based methods, Isolation Forest is an unsupervised anomaly
+    detector that does not require labeled attack data. The algorithm works by randomly
+    partitioning the feature space using isolation trees; anomalous points — those that are
+    rare or different in feature space — are isolated in fewer partitions on average, yielding
+    a shorter path length and thus a higher anomaly score. This property makes Isolation Forest
+    computationally efficient and well-suited for high-dimensional, continuously arriving
+    network feature vectors.
+  </p>
+
+  <div class="page-number">6</div>
+</div>
+
+<!-- ======================================================== -->
+<!--             PAGE 7: LITERATURE REVIEW CONT. (p.7)        -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <p>
+    Several studies have evaluated Isolation Forest specifically on network intrusion datasets.
+    Cao et al. [10] applied Isolation Forest on a subset of the CICIDS-2017 dataset and reported
+    an F1 score of 0.89 for detecting DoS attacks and 0.74 for more subtle infiltration attacks,
+    with a false positive rate of approximately 8% on normal traffic. These figures compare
+    favorably to shallow neural network approaches on the same dataset while requiring
+    significantly less training time and no labeled attack examples.
+  </p>
+  <p>
+    One practical consideration for online deployment is that Isolation Forest requires periodic
+    retraining as network baseline behavior evolves. In the NTTH implementation, the model is
+    retrained weekly using a rolling window of confirmed-normal traffic samples stored in the
+    SQLite event database. This is a simplification compared to fully online learning approaches
+    such as those proposed by Yamanishi et al. [11], but is sufficient for the small-scale,
+    stable network environments that NTTH targets.
+  </p>
+
+  <h2>2.3 Honeypot Technologies</h2>
+  <p>
+    A honeypot is a decoy system deliberately deployed to attract, observe, and log attacker
+    activity. The concept was formally described by Spitzner [12] in his foundational text on
+    honeypot technology, which established the classification between low-interaction honeypots
+    (emulated services with limited attacker interaction) and high-interaction honeypots (full
+    operating systems that allow real attacker sessions at significant operational risk).
+  </p>
+  <p>
+    Cowrie, the SSH and Telnet honeypot used in NTTH, falls into the low-to-medium interaction
+    category. It emulates an SSH server, accepts authentication attempts, and provides a
+    simulated shell environment where attacker commands are logged but not executed on the real
+    host. Cowrie's design, described by its author in [13], is well-suited for capturing brute
+    force credential harvesting, file download attempts, and reconnaissance commands — the
+    behaviors most commonly observed in automated attack campaigns targeting exposed SSH ports.
+  </p>
+  <p>
+    The key difference between static honeypot deployments and NTTH's approach is the concept
+    of flow-aware redirection. In a conventional deployment, honeypots listen on fixed ports
+    and attract only attackers who happen to scan those ports. NTTH, by contrast, detects an
+    active attacker probing a real host and then transparently redirects that specific traffic
+    flow to the honeypot — the attacker believes they are continuing to interact with their
+    original target while all their activity is being captured. This technique, related to the
+    "tarpit" concept described by Lemon [14], has not been widely implemented in open-source
+    tools despite its clear operational advantage.
+  </p>
+  <p>
+    Nawrocki et al. [15] conducted a large-scale measurement study of honeypot activity across
+    IPv4 address space and found that low-interaction honeypots attracted an average of 4,200
+    attack sessions per day per monitored IP, predominantly automated SSH brute force and
+    port scans. Their analysis of attacker behavior patterns — including the use of common
+    credential dictionaries, typical command sequences after successful authentication, and
+    malware download attempt rates — informed the design of NTTH's honeypot session logging
+    schema.
+  </p>
+
+  <div class="page-number">7</div>
+</div>
+
+<!-- ======================================================== -->
+<!--            PAGE 8: LITERATURE REVIEW CONT. (p.8)         -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <table>
+    <tr>
+      <th>Honeypot Type</th>
+      <th>Interaction Level</th>
+      <th>Example Tools</th>
+      <th>Capture Capability</th>
+    </tr>
+    <tr>
+      <td>Low-interaction</td>
+      <td>Emulated service responses only</td>
+      <td>Honeyd, Glastopf</td>
+      <td>Connection attempts, basic payloads</td>
+    </tr>
+    <tr>
+      <td>Medium-interaction</td>
+      <td>Simulated shell environment</td>
+      <td>Cowrie, Kippo</td>
+      <td>Commands, credential attempts, file downloads</td>
+    </tr>
+    <tr>
+      <td>High-interaction</td>
+      <td>Full OS, real services</td>
+      <td>Custom VM, HoneyBOX</td>
+      <td>Full session, malware execution</td>
+    </tr>
+    <tr>
+      <td><strong>NTTH (Flow-redirected)</strong></td>
+      <td><strong>Medium — Cowrie + HTTP trap</strong></td>
+      <td><strong>Cowrie + custom Python HTTP</strong></td>
+      <td><strong>Commands, credentials, HTTP payloads</strong></td>
+    </tr>
+  </table>
+  <div class="fig-caption">Table 2.2: Comparison of honeypot interaction levels and capture capabilities.</div>
+
+  <h2>2.4 Autonomous Network Defense Architectures</h2>
+  <p>
+    The concept of autonomous or self-defending networks gained significant attention following
+    IBM's Autonomic Computing initiative in the early 2000s, which proposed systems capable
+    of self-configuration, self-healing, self-optimization, and self-protection. Kephart and
+    Chess [16] described the theoretical foundations, arguing that increasing network complexity
+    made human-administered management increasingly untenable. The practical realization of
+    autonomous network defense has, however, moved slowly due to concerns about automated
+    responses generating collateral damage — incorrectly blocking legitimate traffic.
+  </p>
+  <p>
+    More recent work has revived interest in autonomous response, particularly in the context
+    of AI-driven security operations. Bilge and Dumitras [17] studied automated exploitation
+    and argued that the only effective counter to automated attacks is automated defense,
+    since human response times cannot match the speed of modern automated exploitation
+    frameworks. This argument directly supports the NTTH design philosophy.
+  </p>
+  <p>
+    DARPA's Cyber Grand Challenge [18], conducted in 2016, demonstrated that fully autonomous
+    systems could identify and patch vulnerabilities in real software without human intervention.
+    While the challenge focused on binary analysis rather than network defense, it established
+    that AI-driven autonomous security systems were technically feasible and competitive with
+    human performance within defined problem boundaries.
+  </p>
+  <p>
+    In the academic literature, Sommer and Paxson [19] raised important concerns about the
+    deployment of machine learning in security contexts, noting that the cost of false positives
+    in security systems is much higher than in typical classification domains, and that
+    adversaries can deliberately craft inputs to evade learned models. These concerns influenced
+    NTTH's design choice to retain human-readable risk scores and configurable enforcement
+    thresholds, allowing administrators to observe and calibrate the system's behavior rather
+    than treating it as a black box.
+  </p>
+
+  <div class="page-number">8</div>
+</div>
+
+<!-- ======================================================== -->
+<!--            PAGE 9: LITERATURE REVIEW CONT. (p.9)         -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <h2>2.5 WiFi Probe Request Monitoring</h2>
+  <p>
+    IEEE 802.11 probe requests are broadcast frames transmitted by wireless client devices
+    as they scan for known access points. Each probe typically contains the client's MAC
+    address and, in older firmware implementations, the SSID of previously associated networks.
+    These frames are transmitted in plaintext on the 2.4 GHz and 5 GHz bands and are
+    receivable by any adapter placed in monitor mode — that is, a mode where the adapter
+    captures all frames on a channel regardless of their intended recipient.
+  </p>
+  <p>
+    From a security perspective, probe requests create two categories of risk. First, the
+    disclosure of previously associated SSIDs in probe frames can reveal an organization's
+    internal network name to passive observers in the vicinity. Second, probe request floods —
+    where an attacker transmits high volumes of probe frames with randomized or spoofed MAC
+    addresses — can disrupt wireless infrastructure or serve as a precursor to deauthentication
+    attacks.
+  </p>
+  <p>
+    Deauthentication attacks exploit a design weakness in the 802.11 management frame
+    specification: deauthentication and disassociation frames are not authenticated in the base
+    standard, meaning any device can forge them. Franklin et al. [20] demonstrated this
+    practically, showing that a single attacker with an inexpensive wireless adapter could
+    forcibly disconnect any client from any access point within radio range. While IEEE 802.11w
+    (Protected Management Frames) was introduced to address this, adoption remains incomplete,
+    particularly in consumer devices.
+  </p>
+  <p>
+    The NTTH wireless monitoring module uses the Atheros AR9271 chipset, which supports monitor
+    mode and raw packet injection on Linux through the ath9k_htc kernel driver, to passively
+    capture probe requests on channel 6. MAC address entropy analysis flags devices with
+    unusual probe rates. The module also counts management frame types in each sampling
+    window and raises an alert when the deauthentication frame rate exceeds the configured
+    threshold (default: 20 per 10-second window). This is not a replacement for enterprise
+    wireless intrusion prevention but provides meaningful visibility at essentially zero
+    additional hardware cost given that the USB adapter is already present for monitoring.
+  </p>
+
+  <h2>2.6 Summary of Research Gaps</h2>
+  <p>
+    The literature review reveals several specific gaps that NTTH attempts to address.
+    Signature-based IDS systems are well-studied and effective for known attacks but
+    fundamentally cannot detect novel variants. Anomaly detection using Isolation Forest has
+    shown strong results on benchmark datasets but has rarely been integrated with signature
+    detection in a composite scoring framework for real-time enforcement.
+  </p>
+  <p>
+    Honeypot systems are widely studied but static in most deployments — they do not
+    dynamically redirect active attackers who were detected targeting legitimate hosts. The
+    concept of flow-aware redirection using kernel-level traffic steering has not been widely
+    implemented in open-source network defense tools. Finally, the combination of autonomous
+    enforcement, real-time monitoring, wireless intrusion detection, and a mobile-accessible
+    dashboard in a single deployable system on commodity hardware represents a design space
+    that existing open-source tools do not occupy.
+  </p>
+
+  <div class="page-number">9</div>
+</div>
+
+<!-- ======================================================== -->
+<!--           PAGE 10: LITERATURE REVIEW — GAP TABLE (p.10)  -->
+<!-- ======================================================== -->
+<div class="page">
+
+  <table>
+    <tr>
+      <th>Gap Area</th>
+      <th>Existing Limitation</th>
+      <th>NTTH Contribution</th>
+    </tr>
+    <tr>
+      <td>Detection coverage</td>
+      <td>Signature-only tools miss zero-day and novel variants</td>
+      <td>Hybrid: IDS rules weighted 0.6 + Isolation Forest weighted 0.4</td>
+    </tr>
+    <tr>
+      <td>Response automation</td>
+      <td>Most IDS tools generate alerts; human intervention required for enforcement</td>
+      <td>Fully autonomous nftables rule generation and application</td>
+    </tr>
+    <tr>
+      <td>Honeypot integration</td>
+      <td>Static honeypots attract opportunistic traffic only</td>
+      <td>Flow-aware redirection of actively detected attacker flows</td>
+    </tr>
+    <tr>
+      <td>Wireless monitoring</td>
+      <td>Separate tools required for WiFi threat detection</td>
+      <td>Integrated probe request and deauth attack monitoring via AR9271</td>
+    </tr>
+    <tr>
+      <td>Deployment cost</td>
+      <td>Enterprise SIEM/SOAR platforms are cost-prohibitive</td>
+      <td>Full deployment on commodity hardware (&lt; $100 total)</td>
+    </tr>
+    <tr>
+      <td>Dashboard accessibility</td>
+      <td>Web consoles only; separate mobile app rarely available</td>
+      <td>Flutter dashboard — simultaneous Web and Android via single codebase</td>
+    </tr>
+  </table>
+  <div class="fig-caption">Table 2.3: Summary of identified research gaps and NTTH's corresponding contributions.</div>
+
+  <p>
+    This survey confirms that while individual components of the NTTH architecture —
+    signature detection, anomaly scoring, honeypots, and wireless monitoring — are
+    well-studied independently, their integration into a unified, autonomous, commodity-hardware
+    deployable system with a real-time cross-platform dashboard has not been demonstrated
+    in prior published work. The following chapters describe the design and implementation
+    of that system in detail.
+  </p>
+
+  <div style="margin-top: 30pt; padding: 12pt; border-left: 4px solid #1b3a5c; background: #f0f4f8;">
+    <p style="margin-bottom:0; font-style:italic; color:#1b3a5c;">
+      <strong>Chapter Summary:</strong> The literature establishes a strong case for hybrid detection combining
+      signature and anomaly methods, confirms the effectiveness of Cowrie-class honeypots for
+      attacker intelligence gathering, and identifies flow-aware autonomous enforcement as a
+      significant gap in existing open-source network defense tooling.
+    </p>
+  </div>
+
+  <div class="page-number">10</div>
+</div>
+
+</body>
+</html>

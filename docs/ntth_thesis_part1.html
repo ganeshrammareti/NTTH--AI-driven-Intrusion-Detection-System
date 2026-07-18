@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTTH Thesis — Part 1: Preliminary Pages</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Calibri:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Calibri', 'Trebuchet MS', sans-serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 1in 1in 0.7in 1in;
+    position: relative;
+    background: #fff;
+    page-break-after: always;
+  }
+
+  h1 {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 18pt;
+    color: #000;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-bottom: 10pt;
+    color: #000;
+  }
+
+  h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 8pt;
+    color: #000;
+  }
+
+  p {
+    text-align: justify;
+    margin-bottom: 10pt;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .page-number {
+    position: absolute;
+    bottom: 0.35in;
+    width: calc(100% - 2in);
+    text-align: center;
+    font-size: 12pt;
+    color: #000;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    min-height: 9.3in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding: 0.2in 0;
+  }
+
+  .cover-uni-logo {
+    font-size: 22pt;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    margin-bottom: 4pt;
+  }
+
+  .cover-uni-sub {
+    font-size: 13pt;
+    color: #222;
+    margin-bottom: 4pt;
+  }
+
+  .cover-accredited {
+    font-size: 11pt;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 30pt;
+  }
+
+  .cover-report-type {
+    font-size: 15pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #000;
+    margin-bottom: 20pt;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 6pt 40pt;
+  }
+
+  .cover-title {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #000;
+    line-height: 1.4;
+    margin-bottom: 8pt;
+    border: 2px solid #000;
+    padding: 14pt 20pt;
+    max-width: 5.5in;
+  }
+
+  .cover-subtitle {
+    font-size: 12pt;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 30pt;
+  }
+
+  .cover-submitted {
+    font-size: 12pt;
+    line-height: 1.9;
+  }
+
+  .cover-label {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 12pt;
+  }
+
+  .cover-footer {
+    font-size: 12pt;
+    color: #222;
+    margin-top: 20pt;
+  }
+
+  /* GENERIC SECTION PAGES */
+  .section-title {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20pt;
+    text-transform: uppercase;
+  }
+
+  .signature-block {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60pt;
+  }
+
+  .sig-line {
+    text-align: center;
+    width: 2.2in;
+  }
+
+  .sig-rule {
+    border-top: 1px solid #000;
+    padding-top: 5pt;
+    font-size: 12pt;
+  }
+
+  /* TABLE OF CONTENTS */
+  .toc-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4pt;
+    font-size: 12pt;
+  }
+
+  .toc-chapter {
+    font-weight: bold;
+    margin-top: 8pt;
+    margin-bottom: 2pt;
+  }
+
+  .toc-section {
+    margin-left: 24pt;
+  }
+
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #000;
+    margin: 0 6pt 3pt 6pt;
+    min-width: 30pt;
+  }
+
+  .toc-page {
+    min-width: 20pt;
+    text-align: right;
+  }
+
+  /* LIST TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12pt;
+    margin-bottom: 14pt;
+  }
+
+  th {
+    background: #1b3a5c;
+    color: #fff;
+    font-weight: bold;
+    padding: 6pt 10pt;
+    text-align: left;
+    border: 1px solid #1b3a5c;
+    font-size: 12pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  td {
+    padding: 5pt 10pt;
+    border: 1px solid #aaa;
+    vertical-align: top;
+    font-size: 12pt;
+  }
+
+  tr:nth-child(even) td {
+    background: #f0f4f8;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @media print {
+    .page { page-break-after: always; margin: 0 auto; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    tr:nth-child(even) td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======================================================== -->
+<!--                     PAGE 1: COVER PAGE                   -->
+<!-- ======================================================== -->
+<div class="page">
+  <div class="cover">
+    <div>
+      <div class="cover-uni-logo">YOUR UNIVERSITY NAME</div>
+      <div class="cover-uni-sub">School of Engineering &amp; Technology</div>
+      <div class="cover-uni-sub">Department of Computer Science &amp; Engineering</div>
+      <div class="cover-accredited">NAAC Accredited 'A++' Grade</div>
+    </div>
+
+    <div class="cover-report-type">PROJECT REPORT</div>
+
+    <div>
+      <div class="cover-title">
+        NTTH: An Agent-Inspired Autonomous Network Defense Architecture<br>
+        with Hybrid Risk Scoring and Dynamic Honeypot Deployment
+      </div>
+      <div class="cover-subtitle">
+        AI-Driven Honeypot Firewall for Real-Time Threat Detection and Response
+      </div>
+    </div>
+
+    <div class="cover-submitted">
+      <span class="cover-label">Submitted By:</span><br>
+      [Student Name 1] &nbsp;—&nbsp; [Roll No.]<br>
+      [Student Name 2] &nbsp;—&nbsp; [Roll No.]<br>
+      [Student Name 3] &nbsp;—&nbsp; [Roll No.]<br><br>
+      <span class="cover-label">Under the Guidance of:</span><br>
+      [Professor Name], [Designation]<br>
+      Department of Computer Science &amp; Engineering
+    </div>
+
+    <div>
+      <div style="font-size:12pt;margin-bottom:4pt;">in partial fulfillment for the award of the degree of</div>
+      <div style="font-size:14pt;font-weight:bold;">BACHELOR OF TECHNOLOGY</div>
+      <div style="font-size:13pt;font-weight:bold;">IN</div>
+      <div style="font-size:13pt;font-weight:bold;">Computer Science &amp; Engineering</div>
+    </div>
+
+    <div class="cover-footer">Academic Year: 2025–2026</div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!--                 PAGE 2: ACKNOWLEDGEMENT                  -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>Acknowledgement</h1>
+  <p>
+    We would like to express our sincere gratitude to our project guide, [Professor Name], [Designation],
+    Department of Computer Science and Engineering, for providing us with the opportunity and direction
+    to work on this project. This work would not have been possible without their consistent guidance,
+    technical insight, and encouragement throughout every phase of development.
+  </p>
+  <p>
+    We express our deepest thanks to the Head of the Department, [HOD Name], for providing the
+    necessary laboratory infrastructure, network resources, and institutional support that made this
+    project technically feasible. The availability of a dedicated test environment was essential to
+    validating the autonomous threat detection and response capabilities developed in this work.
+  </p>
+  <p>
+    We also wish to acknowledge the constructive feedback provided during internal reviews, which
+    helped sharpen both the design and the experimental evaluation sections. The critical discussion
+    around honeypot deception strategies, particularly regarding low-interaction versus
+    high-interaction honeypot tradeoffs, directly influenced our final architecture choices.
+  </p>
+  <p>
+    Special thanks are due to our peers in the networking and security research group for providing
+    a collaborative environment where ideas could be tested freely. Several insights regarding
+    Isolation Forest parameter tuning emerged from informal discussions that proved invaluable
+    when refining the anomaly detection subsystem.
+  </p>
+  <p>
+    We are grateful to the open-source communities behind Cowrie, Snort, Suricata, nftables, and
+    the Flutter framework, whose publicly available codebases, documentation, and community
+    forums served as essential reference points throughout implementation.
+  </p>
+  <p>
+    Finally, we would like to thank our families for their patience and unwavering support
+    during the long hours this project demanded, especially during the system integration and
+    testing phases.
+  </p>
+  <div style="text-align:right; margin-top: 40pt;">
+    [Student Name 1]<br>
+    [Student Name 2]<br>
+    [Student Name 3]
+  </div>
+  <div class="page-number">i</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                   PAGE 3: DECLARATION                    -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>Declaration</h1>
+  <p>
+    We hereby declare that this project report entitled <em>"NTTH: An Agent-Inspired Autonomous
+    Network Defense Architecture with Hybrid Risk Scoring and Dynamic Honeypot Deployment"</em>
+    submitted by [Student Name 1] ([Roll No.]), [Student Name 2] ([Roll No.]), and [Student Name 3]
+    ([Roll No.]), is being submitted in partial fulfillment of the requirements for the degree of
+    Bachelor of Technology in Computer Science and Engineering, [University Name], during the
+    academic year 2025–2026.
+  </p>
+  <p>
+    This is a bonafide record of original work carried out under the guidance and supervision of
+    [Professor Name], [Designation], Department of Computer Science and Engineering. This report
+    has not been submitted, either in part or in full, to any other institution or university for the
+    award of any degree, diploma, or certificate.
+  </p>
+  <p>
+    All external sources, references, tools, and datasets used in this work have been duly
+    acknowledged within the text and listed in the references section. Any results presented
+    represent our own experimental observations unless explicitly cited otherwise.
+  </p>
+
+  <div class="signature-block">
+    <div class="sig-line">
+      <div class="sig-rule">[Student Name 1]<br>[Roll No.]</div>
+    </div>
+    <div class="sig-line">
+      <div class="sig-rule">[Student Name 2]<br>[Roll No.]</div>
+    </div>
+    <div class="sig-line">
+      <div class="sig-rule">[Student Name 3]<br>[Roll No.]</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30pt;">
+    <p><strong>Place:</strong> [City]</p>
+    <p><strong>Date:</strong> June 2026</p>
+  </div>
+  <div class="page-number">ii</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                   PAGE 4: CERTIFICATE                    -->
+<!-- ======================================================== -->
+<div class="page">
+  <div style="text-align:center; margin-bottom:10pt;">
+    <div style="font-size:13pt; font-weight:bold;">[University Name]</div>
+    <div style="font-size:12pt;">School of Engineering &amp; Technology</div>
+    <div style="font-size:12pt;">Department of Computer Science &amp; Engineering</div>
+    <div style="font-size:12pt; margin-top:6pt;">June, 2026</div>
+  </div>
+
+  <h1>Certificate</h1>
+
+  <p>
+    This is to certify that the project report entitled <em>"NTTH: An Agent-Inspired Autonomous
+    Network Defense Architecture with Hybrid Risk Scoring and Dynamic Honeypot Deployment"</em>
+    submitted by [Student Name 1] ([Roll No.]), [Student Name 2] ([Roll No.]), and [Student Name 3]
+    ([Roll No.]), in partial fulfillment of the requirements for the degree of Bachelor of Technology
+    in Computer Science and Engineering, [University Name], during the academic year 2025–2026, is
+    a bonafide record of original work carried out under my guidance and supervision.
+  </p>
+
+  <p>
+    The project was developed entirely by the students mentioned above and has not been submitted
+    elsewhere for the award of any degree or diploma. The work presented in this report satisfies
+    all requirements laid down by the department for the award of the said degree.
+  </p>
+
+  <div class="signature-block">
+    <div class="sig-line">
+      <div class="sig-rule">
+        [Professor Name]<br>
+        [Designation]<br>
+        Department of CSE<br>
+        [University Name]
+      </div>
+    </div>
+    <div class="sig-line">
+      <div class="sig-rule">
+        [HOD Name]<br>
+        Head of Department<br>
+        Department of CSE<br>
+        [University Name]
+      </div>
+    </div>
+  </div>
+  <div class="page-number">iii</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                   PAGE 5: ABSTRACT                       -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>Abstract</h1>
+  <p>
+    The increasing sophistication of automated cyber attacks demands network defense systems
+    capable of autonomous detection, decision-making, and enforcement without relying on
+    continuous human oversight. Traditional Intrusion Detection Systems such as Snort and
+    Suricata generate alerts effectively but lack automated response mechanisms, leaving a
+    critical gap between threat detection and actual containment that typically spans 15 to 30
+    minutes in real-world environments.
+  </p>
+  <p>
+    This project presents NTTH (No Time To Hack), an agent-inspired autonomous network defense
+    architecture that implements a complete closed-loop pipeline running from packet capture
+    through threat scoring, firewall enforcement, and attacker intelligence gathering. The system
+    uses a hybrid risk scoring model that combines signature-based IDS rule detection (weighted
+    at 0.6) with an unsupervised Isolation Forest anomaly detector (weighted at 0.4). When a
+    threat crosses the configured threshold, the system autonomously applies nftables
+    kernel-level firewall rules and redirects specific attacker traffic flows to SSH (Cowrie) and
+    HTTP honeypots, capturing attacker commands, credentials, and behavioral patterns in real time.
+  </p>
+  <p>
+    The architecture follows a modular agent-inspired pipeline with four autonomous processing
+    stages — Threat Assessment, Decision Making, Enforcement, and Reporting — coordinated
+    through an asynchronous event bus using Redis Pub/Sub. A real-time Flutter dashboard
+    (both Web and Android) provides live visualization of active threats, firewall rules, honeypot
+    sessions, and network topology through persistent WebSocket connections. The system also
+    integrates wireless monitoring using a commodity Atheros AR9271 USB WiFi adapter operating
+    in monitor mode for probe request analysis and deauthentication attack detection.
+  </p>
+  <p>
+    The complete system is deployable on commodity hardware — an Ubuntu laptop paired with a
+    $10 USB WiFi adapter — making enterprise-grade autonomous defense accessible for small
+    network environments. Experimental evaluation includes response time measurement, detection
+    accuracy benchmarking against Snort and Suricata, honeypot session analysis, and comparative
+    risk score distribution across known attack categories.
+  </p>
+  <p>
+    <strong>Keywords:</strong> Intrusion Detection System, Honeypot, Autonomous Network Defense,
+    Anomaly Detection, Isolation Forest, Firewall Automation, Agent-Inspired Architecture,
+    WiFi Monitoring, Flutter Dashboard, nftables, Cowrie, Redis
+  </p>
+  <div class="page-number">iv</div>
+</div>
+
+<!-- ======================================================== -->
+<!--               PAGES 6-7: TABLE OF CONTENTS               -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>Table of Contents</h1>
+
+  <div style="font-size:12pt; line-height:1.8;">
+    <div class="toc-entry toc-chapter">
+      <span>Acknowledgement</span><span class="toc-dots"></span><span class="toc-page">i</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>Declaration</span><span class="toc-dots"></span><span class="toc-page">ii</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>Certificate</span><span class="toc-dots"></span><span class="toc-page">iii</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>Abstract</span><span class="toc-dots"></span><span class="toc-page">iv</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>List of Tables</span><span class="toc-dots"></span><span class="toc-page">v</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>List of Figures</span><span class="toc-dots"></span><span class="toc-page">vi</span>
+    </div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:10pt;">
+      <span>Chapter 1: Introduction</span><span class="toc-dots"></span><span class="toc-page">1</span>
+    </div>
+    <div class="toc-entry toc-section"><span>1.1 Background and Context</span><span class="toc-dots"></span><span class="toc-page">1</span></div>
+    <div class="toc-entry toc-section"><span>1.2 Problem Statement</span><span class="toc-dots"></span><span class="toc-page">3</span></div>
+    <div class="toc-entry toc-section"><span>1.3 Motivation</span><span class="toc-dots"></span><span class="toc-page">4</span></div>
+    <div class="toc-entry toc-section"><span>1.4 Objectives</span><span class="toc-dots"></span><span class="toc-page">5</span></div>
+    <div class="toc-entry toc-section"><span>1.5 Scope and Limitations</span><span class="toc-dots"></span><span class="toc-page">6</span></div>
+    <div class="toc-entry toc-section"><span>1.6 Organization of the Report</span><span class="toc-dots"></span><span class="toc-page">7</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>Chapter 2: Literature Review</span><span class="toc-dots"></span><span class="toc-page">8</span>
+    </div>
+    <div class="toc-entry toc-section"><span>2.1 Signature-Based Intrusion Detection Systems</span><span class="toc-dots"></span><span class="toc-page">8</span></div>
+    <div class="toc-entry toc-section"><span>2.2 Anomaly-Based Detection and Machine Learning</span><span class="toc-dots"></span><span class="toc-page">10</span></div>
+    <div class="toc-entry toc-section"><span>2.3 Honeypot Technologies</span><span class="toc-dots"></span><span class="toc-page">12</span></div>
+    <div class="toc-entry toc-section"><span>2.4 Autonomous Network Defense Architectures</span><span class="toc-dots"></span><span class="toc-page">14</span></div>
+    <div class="toc-entry toc-section"><span>2.5 WiFi Probe Request Monitoring</span><span class="toc-dots"></span><span class="toc-page">16</span></div>
+    <div class="toc-entry toc-section"><span>2.6 Summary of Research Gaps</span><span class="toc-dots"></span><span class="toc-page">17</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>Chapter 3: System Design and Architecture</span><span class="toc-dots"></span><span class="toc-page">19</span>
+    </div>
+    <div class="toc-entry toc-section"><span>3.1 System Overview</span><span class="toc-dots"></span><span class="toc-page">19</span></div>
+    <div class="toc-entry toc-section"><span>3.2 Agent-Inspired Pipeline Design</span><span class="toc-dots"></span><span class="toc-page">21</span></div>
+    <div class="toc-entry toc-section"><span>3.3 Asynchronous Event Bus Architecture</span><span class="toc-dots"></span><span class="toc-page">23</span></div>
+    <div class="toc-entry toc-section"><span>3.4 Hybrid Risk Scoring Model</span><span class="toc-dots"></span><span class="toc-page">25</span></div>
+    <div class="toc-entry toc-section"><span>3.5 Flow-Aware Dynamic Honeypot Deployment</span><span class="toc-dots"></span><span class="toc-page">27</span></div>
+    <div class="toc-entry toc-section"><span>3.6 Database Schema Design</span><span class="toc-dots"></span><span class="toc-page">29</span></div>
+    <div class="toc-entry toc-section"><span>3.7 System Requirements</span><span class="toc-dots"></span><span class="toc-page">30</span></div>
+  </div>
+  <div class="page-number">v</div>
+</div>
+
+<!-- TOC Page 2 -->
+<div class="page">
+  <div style="font-size:12pt; line-height:1.8; margin-top:10pt;">
+    <div class="toc-entry toc-chapter">
+      <span>Chapter 4: Implementation</span><span class="toc-dots"></span><span class="toc-page">32</span>
+    </div>
+    <div class="toc-entry toc-section"><span>4.1 Technology Stack</span><span class="toc-dots"></span><span class="toc-page">32</span></div>
+    <div class="toc-entry toc-section"><span>4.2 Hardware Requirements</span><span class="toc-dots"></span><span class="toc-page">34</span></div>
+    <div class="toc-entry toc-section"><span>4.3 Backend Service Architecture</span><span class="toc-dots"></span><span class="toc-page">35</span></div>
+    <div class="toc-entry toc-section"><span>4.4 Packet Capture and Processing Engine</span><span class="toc-dots"></span><span class="toc-page">37</span></div>
+    <div class="toc-entry toc-section"><span>4.5 IDS Rule Engine Implementation</span><span class="toc-dots"></span><span class="toc-page">38</span></div>
+    <div class="toc-entry toc-section"><span>4.6 Isolation Forest Anomaly Detector</span><span class="toc-dots"></span><span class="toc-page">40</span></div>
+    <div class="toc-entry toc-section"><span>4.7 Firewall and Honeypot Integration</span><span class="toc-dots"></span><span class="toc-page">42</span></div>
+    <div class="toc-entry toc-section"><span>4.8 Flutter Dashboard Implementation</span><span class="toc-dots"></span><span class="toc-page">44</span></div>
+    <div class="toc-entry toc-section"><span>4.9 WiFi Monitor Module</span><span class="toc-dots"></span><span class="toc-page">46</span></div>
+    <div class="toc-entry toc-section"><span>4.10 REST API Endpoints</span><span class="toc-dots"></span><span class="toc-page">47</span></div>
+    <div class="toc-entry toc-section"><span>4.11 Docker Deployment</span><span class="toc-dots"></span><span class="toc-page">49</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>Chapter 5: Testing and Demonstration</span><span class="toc-dots"></span><span class="toc-page">51</span>
+    </div>
+    <div class="toc-entry toc-section"><span>5.1 Test Environment Setup</span><span class="toc-dots"></span><span class="toc-page">51</span></div>
+    <div class="toc-entry toc-section"><span>5.2 Attack Testing Methodology</span><span class="toc-dots"></span><span class="toc-page">53</span></div>
+    <div class="toc-entry toc-section"><span>5.3 System Demonstration Screenshots</span><span class="toc-dots"></span><span class="toc-page">56</span></div>
+    <div class="toc-entry toc-section"><span>5.4 API Endpoint Verification</span><span class="toc-dots"></span><span class="toc-page">62</span></div>
+    <div class="toc-entry toc-section"><span>5.5 Honeypot Session Logs</span><span class="toc-dots"></span><span class="toc-page">64</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>Chapter 6: Experimental Results and Analysis</span><span class="toc-dots"></span><span class="toc-page">67</span>
+    </div>
+    <div class="toc-entry toc-section"><span>6.1 Experimental Setup and Metrics</span><span class="toc-dots"></span><span class="toc-page">67</span></div>
+    <div class="toc-entry toc-section"><span>6.2 Detection Performance Results</span><span class="toc-dots"></span><span class="toc-page">69</span></div>
+    <div class="toc-entry toc-section"><span>6.3 Response Time Analysis</span><span class="toc-dots"></span><span class="toc-page">72</span></div>
+    <div class="toc-entry toc-section"><span>6.4 Comparative Evaluation</span><span class="toc-dots"></span><span class="toc-page">74</span></div>
+    <div class="toc-entry toc-section"><span>6.5 Honeypot Effectiveness</span><span class="toc-dots"></span><span class="toc-page">76</span></div>
+    <div class="toc-entry toc-section"><span>6.6 WiFi Monitor Performance</span><span class="toc-dots"></span><span class="toc-page">78</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>Chapter 7: Conclusion and Future Work</span><span class="toc-dots"></span><span class="toc-page">80</span>
+    </div>
+    <div class="toc-entry toc-section"><span>7.1 Summary of Achievements</span><span class="toc-dots"></span><span class="toc-page">80</span></div>
+    <div class="toc-entry toc-section"><span>7.2 Limitations of the Current System</span><span class="toc-dots"></span><span class="toc-page">82</span></div>
+    <div class="toc-entry toc-section"><span>7.3 Future Work</span><span class="toc-dots"></span><span class="toc-page">83</span></div>
+    <div class="toc-entry toc-section"><span>7.4 Final Remarks</span><span class="toc-dots"></span><span class="toc-page">85</span></div>
+
+    <div class="toc-entry toc-chapter" style="margin-top:6pt;">
+      <span>References</span><span class="toc-dots"></span><span class="toc-page">86</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>Appendix A: Code Listings</span><span class="toc-dots"></span><span class="toc-page">91</span>
+    </div>
+    <div class="toc-entry toc-chapter">
+      <span>Appendix B: API Documentation</span><span class="toc-dots"></span><span class="toc-page">95</span>
+    </div>
+  </div>
+  <div class="page-number">vi</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                 PAGE 8: LIST OF TABLES                   -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>List of Tables</h1>
+  <table>
+    <tr><th>Table No.</th><th>Table Name</th><th>Page No.</th></tr>
+    <tr><td>Table 2.1</td><td>Comparison of Existing IDS Solutions</td><td>9</td></tr>
+    <tr><td>Table 2.2</td><td>Honeypot Technology Comparison</td><td>13</td></tr>
+    <tr><td>Table 2.3</td><td>Summary of Literature Gaps</td><td>18</td></tr>
+    <tr><td>Table 3.1</td><td>Agent Processing Stage Definitions</td><td>22</td></tr>
+    <tr><td>Table 3.2</td><td>Event Bus Topic Channels</td><td>24</td></tr>
+    <tr><td>Table 3.3</td><td>Feature Vector Description (10 Dimensions)</td><td>26</td></tr>
+    <tr><td>Table 3.4</td><td>IDS Rule Engine Detectors</td><td>27</td></tr>
+    <tr><td>Table 3.5</td><td>Risk Score to Action Mapping</td><td>28</td></tr>
+    <tr><td>Table 3.6</td><td>Database Tables Overview</td><td>30</td></tr>
+    <tr><td>Table 3.7</td><td>System Hardware Requirements</td><td>31</td></tr>
+    <tr><td>Table 4.1</td><td>Technology Stack Summary</td><td>33</td></tr>
+    <tr><td>Table 4.2</td><td>Python Backend Dependencies</td><td>36</td></tr>
+    <tr><td>Table 4.3</td><td>REST API Endpoints</td><td>48</td></tr>
+    <tr><td>Table 4.4</td><td>Docker Container Configuration</td><td>50</td></tr>
+    <tr><td>Table 5.1</td><td>Attack Testing Scenarios</td><td>54</td></tr>
+    <tr><td>Table 5.2</td><td>API Verification Results</td><td>63</td></tr>
+    <tr><td>Table 6.1</td><td>Experimental Metrics Summary</td><td>68</td></tr>
+    <tr><td>Table 6.2</td><td>Detection Accuracy by Attack Type</td><td>70</td></tr>
+    <tr><td>Table 6.3</td><td>Response Time Comparison</td><td>73</td></tr>
+    <tr><td>Table 6.4</td><td>Comparative Evaluation vs. Snort and Suricata</td><td>75</td></tr>
+    <tr><td>Table 6.5</td><td>Honeypot Session Summary</td><td>77</td></tr>
+  </table>
+  <div class="page-number">vii</div>
+</div>
+
+<!-- ======================================================== -->
+<!--                 PAGE 9: LIST OF FIGURES                  -->
+<!-- ======================================================== -->
+<div class="page">
+  <h1>List of Figures</h1>
+  <table>
+    <tr><th>Figure No.</th><th>Figure Name</th><th>Page No.</th></tr>
+    <tr><td>Fig 1.1</td><td>Traditional vs NTTH Detection-to-Response Gap</td><td>4</td></tr>
+    <tr><td>Fig 1.2</td><td>NTTH System Overview Block Diagram</td><td>6</td></tr>
+    <tr><td>Fig 3.1</td><td>System Architecture — Five-Phase Pipeline</td><td>20</td></tr>
+    <tr><td>Fig 3.2</td><td>Agent Pipeline — Sequential Processing Flow</td><td>22</td></tr>
+    <tr><td>Fig 3.3</td><td>Asynchronous Event Bus Topology</td><td>24</td></tr>
+    <tr><td>Fig 3.4</td><td>Hybrid Risk Scoring Model Formula</td><td>26</td></tr>
+    <tr><td>Fig 3.5</td><td>Flow-Aware Honeypot Deployment Logic</td><td>28</td></tr>
+    <tr><td>Fig 3.6</td><td>Database Entity-Relationship Diagram</td><td>30</td></tr>
+    <tr><td>Fig 4.1</td><td>Packet Capture Pipeline — Scapy Processing</td><td>37</td></tr>
+    <tr><td>Fig 4.2</td><td>Isolation Forest Feature Space Visualization</td><td>41</td></tr>
+    <tr><td>Fig 4.3</td><td>nftables Firewall Rule Chain Diagram</td><td>43</td></tr>
+    <tr><td>Fig 4.4</td><td>Flutter Dashboard Architecture</td><td>45</td></tr>
+    <tr><td>Fig 5.1</td><td>Login Screen — NTTH Dashboard</td><td>56</td></tr>
+    <tr><td>Fig 5.2</td><td>Dashboard — Network Command Center</td><td>57</td></tr>
+    <tr><td>Fig 5.3</td><td>Network Topology — Live Device Graph</td><td>58</td></tr>
+    <tr><td>Fig 5.4</td><td>Firewall Rules — Active Block Rules</td><td>59</td></tr>
+    <tr><td>Fig 5.5</td><td>Honeypot Sessions — Captured Commands</td><td>60</td></tr>
+    <tr><td>Fig 5.6</td><td>Threat Map — Geo Intelligence Stream</td><td>61</td></tr>
+    <tr><td>Fig 5.7</td><td>Device Management Panel</td><td>62</td></tr>
+    <tr><td>Fig 6.1</td><td>ROC Curve — Detection Model</td><td>71</td></tr>
+    <tr><td>Fig 6.2</td><td>Response Time Distribution Histogram</td><td>73</td></tr>
+    <tr><td>Fig 6.3</td><td>Risk Score Distribution by Attack Category</td><td>74</td></tr>
+    <tr><td>Fig 6.4</td><td>Comparative Bar Chart vs. Snort and Suricata</td><td>76</td></tr>
+    <tr><td>Fig 6.5</td><td>Honeypot Attacker Command Frequency Chart</td><td>78</td></tr>
+  </table>
+  <div class="page-number">viii</div>
+</div>
+
+</body>
+</html>
